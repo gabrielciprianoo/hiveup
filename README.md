@@ -6,14 +6,15 @@ The project is organized in a **monorepo with pnpm workspaces**, separating the 
 
 ## 📂 Project Structure
 
-hiveup/
-├── apps/
-│   ├── api/        # Backend in Node.js + Express + TypeScript
-│   └── web/        # Frontend in React + Vite + TailwindCSS
-├── packages/       # 📦 Shared libraries (UI, types, utils)
-├── pnpm-workspace.yaml
-├── package.json
-└── README.md
+- hiveup/
+  - apps/
+    - api/ — Backend: Node.js + Express + TypeScript
+    - web/ — Frontend: React + Vite + TailwindCSS
+  - packages/ — Shared libraries (UI, types, utils)
+  - pnpm-workspace.yaml
+  - package.json
+  - README.md
+
 
 ## 🚀 Stack
 
