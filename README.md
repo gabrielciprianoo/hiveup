@@ -1,16 +1,16 @@
 
 # 🐝 HiveUp
 
-HiveUp es un gestor ligero de proyectos y tareas para equipos pequeños.  
-El proyecto está organizado en un **monorepo con pnpm workspaces**, donde separamos el backend (API) y el frontend (Web).
+**HiveUp** is a lightweight project and task manager for small teams.  
+The project is organized in a **monorepo with pnpm workspaces**, separating the backend (API) and the frontend (Web).
 
-## 📂 Estructura del proyecto
+## 📂 Project Structure
 
 hiveup/
 ├── apps/
-│   ├── api/        # Backend en Node.js + Express + TypeScript
-│   └── web/        # Frontend en React + Vite + TailwindCSS
-├── packages/       # 📦 Librerías compartidas (UI, tipos, utils)
+│   ├── api/        # Backend in Node.js + Express + TypeScript
+│   └── web/        # Frontend in React + Vite + TailwindCSS
+├── packages/       # 📦 Shared libraries (UI, types, utils)
 ├── pnpm-workspace.yaml
 ├── package.json
 └── README.md
@@ -19,27 +19,26 @@ hiveup/
 
 - ⚙️ Backend: Node.js + Express + TypeScript  
 - 💻 Frontend: React + Vite + TailwindCSS  
-- 📦 Gestión: pnpm Workspaces (monorepo)  
+- 📦 Monorepo Management: pnpm Workspaces  
 
-## ⚡️ Comandos principales
+## ⚡️ Main Commands
 
-Desde la raíz del proyecto:
+Run these from the project root:
 
-pnpm install          # 📥 Instalar dependencias  
-pnpm --filter api dev # 🛠️ Levantar API en modo dev  
-pnpm --filter web dev # 🎨 Levantar frontend en modo dev  
-pnpm -r build         # 🏗️ Compilar todos los proyectos  
+pnpm install          # 📥 Install dependencies  
+pnpm --filter api dev # 🛠️ Start API in dev mode  
+pnpm --filter web dev # 🎨 Start frontend in dev mode  
+pnpm -r build         # 🏗️ Build all projects  
 
-## 🌱 Estado inicial
+## 🌱 Initial State
 
-Este repo actualmente solo contiene la **estructura base del monorepo**.  
-En ramas posteriores se irán agregando funcionalidades como:
-- 🔑 API REST con autenticación y modelos (Proyectos, Tareas, Colaboradores).  
-- 🎨 Frontend con Atomic Design y tablero tipo Kanban.  
-- 🧩 Scripts y configuración compartida en `packages/`.  
+This repo currently only contains the **base monorepo structure**.  
+In future branches, new features will be added, such as:
+- 🔑 REST API with authentication and models (Projects, Tasks, Collaborators).  
+- 🎨 Frontend using Atomic Design and a Kanban-style board.  
+- 🧩 Shared scripts and configuration in `packages/`.  
 
-## 📌 Notas
+## 📌 Notes
 
-- El proyecto está en desarrollo y crecerá de forma incremental usando ramas (`feature/*`, `task/endpoint/*`, etc.).  
-- Revisa la rama `main` para la última versión estable.
-EOF
+- The project is under active development and will grow incrementally using feature branches (`feature/*`, `task/endpoint/*`, etc.).  
+- Check the `main` branch for the latest stable version.
