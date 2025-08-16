@@ -1,4 +1,4 @@
-cat > README.md << 'EOF'
+
 # 🐝 HiveUp
 
 HiveUp es un gestor ligero de proyectos y tareas para equipos pequeños.  
