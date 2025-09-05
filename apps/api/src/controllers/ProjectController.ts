@@ -17,6 +17,6 @@ export class ProjectController {
         } catch (error) {
             console.log(error)
         }
-        response.send('create project');
+        
     }
 }
