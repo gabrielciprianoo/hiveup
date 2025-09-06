@@ -5,7 +5,12 @@ import Project from "../models/Project";
 export class ProjectController { 
 
     static getAllProjects = async ( request : Request, response : Response)=> {
-        response.send('all projects');
+        try {
+            const projects = await Project.find({});
+            response.json(projects);
+        } catch (error) {
+            console.log(error)
+        }
     }
     
     static createProject = async ( request : Request, response : Response)=> {
