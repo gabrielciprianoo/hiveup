@@ -19,4 +19,11 @@ router.get('/:id',
     ProjectController.getProjectById
 );
 
+router.put('/:id',
+    param('id').isMongoId().withMessage('ID no válido'),
+    createProjectRules,
+    handleInputErrors,
+    ProjectController.updateProject
+);
+
  export default router;
