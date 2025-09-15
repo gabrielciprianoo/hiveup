@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-const taskStatus = {
+export const taskStatus = {
   PENDING: "pending",
   ON_HOLD: "onHold",
   IN_PROGRESS: "inProgress",
@@ -8,7 +8,7 @@ const taskStatus = {
   COMPLETED: "completed",
 } as const;
 
-type TaskStatus = (typeof taskStatus)[keyof typeof taskStatus];
+export type TaskStatus = (typeof taskStatus)[keyof typeof taskStatus];
 
 export interface ITask extends Document {
   name: string;
@@ -39,6 +39,7 @@ export const TaskSchema: Schema = new Schema(
     status: {
       type: String,
       enum: Object.values(taskStatus),
+      default: taskStatus.PENDING,
     },
   },
   { timestamps: true }
