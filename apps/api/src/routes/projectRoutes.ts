@@ -3,6 +3,7 @@ import { ProjectController } from "../controllers/ProjectController";
 import { handleInputErrors } from "../middleware/validation";
 import { createProjectRules } from "../validators/project.validators";
 import { param } from "express-validator";
+import { checkProjectExists } from "../middleware/project";
 
  const router: Router = Router();
 
@@ -13,21 +14,23 @@ import { param } from "express-validator";
     ProjectController.createProject
 );
 
-router.get('/:id',
-    param('id').isMongoId().withMessage('ID no válido'),
+router.get('/:projectId',
+    param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
+    checkProjectExists,
     ProjectController.getProjectById
 );
 
-router.put('/:id',
-    param('id').isMongoId().withMessage('ID no válido'),
-    createProjectRules,
+router.put('/:projectId',
+    param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
+    checkProjectExists,
     ProjectController.updateProject
 );
-router.delete('/:id',
-    param('id').isMongoId().withMessage('ID no válido'),
+router.delete('/:projectId',
+    param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
+    checkProjectExists,
     ProjectController.deleteProject
 );
 
