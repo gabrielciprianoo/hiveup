@@ -12,8 +12,7 @@ export class TaskController {
       const task = new Task(request.body);
       task.project = project.id;
       project.tasks.push(task.id);
-      await task.save();
-      await project.save();
+      await Promise.allSettled([task.save(), project.save()]);
 
       response.send("Tarea Creada Correctamente");
     } catch (error) {
