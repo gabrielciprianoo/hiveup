@@ -2,13 +2,18 @@ import { Router } from "express";
 import { TaskController } from "../controllers/TaskController";
 import { checkProjectExists } from "../middleware/project";
 import { param } from "express-validator";
+import { createTaskRules } from "../validators/task.validators";
+import { handleInputErrors } from "../middleware/validation";
 
 const router: Router = Router();
 
 router.post(
   "/project/:projectId",
-  param('id').isMongoId().withMessage('ID no válido'),
+  param('projectId').isMongoId().withMessage('ID no válido'),
+  handleInputErrors,
   checkProjectExists,
+  createTaskRules,
+  handleInputErrors,
   TaskController.createTask
 );
 
