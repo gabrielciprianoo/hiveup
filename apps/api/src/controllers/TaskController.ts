@@ -25,4 +25,22 @@ export class TaskController {
       console.log(error);
     }
   };
+
+  static getTaskById = async (request: Request, response: Response) => {
+    const { taskId } = request.params;
+    const task = await Task.findById(taskId);
+
+    if (!task) {
+      response.status(404).json({ error: "Tarea no encontrada" });
+      return;
+    }
+
+    const projectId = request.project.id;
+
+    if (projectId !== task.project.toString()) {
+      response.status(400).json({ error: "Acción no válida" });
+      return;
+    }
+    response.json(task);
+  };
 }
