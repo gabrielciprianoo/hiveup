@@ -17,7 +17,6 @@ import { checkProjectExists } from "../middleware/project";
 router.get('/:projectId',
     param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
-    checkProjectExists,
     ProjectController.getProjectById
 );
 
