@@ -17,6 +17,12 @@ router.post(
   TaskController.createTask
 );
 
-router.get("/", TaskController.getAllTasks);
+router.get(
+  "/",
+  param("projectId").isMongoId().withMessage("ID no válido"),
+  checkProjectExists,
+  handleInputErrors,
+  TaskController.getAllTasks
+);
 
 export default router;

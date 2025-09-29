@@ -3,7 +3,13 @@ import Task, { taskStatus } from "../models/Task";
 
 export class TaskController {
   static getAllTasks = async (request: Request, response: Response) => {
-    response.send("get all tasks");
+    try {
+      const projectId = request.project.id;
+      const tasks = await Task.find({ project: projectId }).populate("project");
+      response.json(tasks);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   static createTask = async (request: Request, response: Response) => {
