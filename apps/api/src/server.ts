@@ -13,6 +13,6 @@ const app: express.Application = express();
 
 app.use(express.json());
 app.use('/api/projects',  projectRoutes);
-app.use('/api/tasks',  taskToutes);
+app.use('/api/projects/:projectId/tasks',  taskToutes);
 
 export default app;

@@ -5,11 +5,11 @@ import { param } from "express-validator";
 import { createTaskRules } from "../validators/task.validators";
 import { handleInputErrors } from "../middleware/validation";
 
-const router: Router = Router();
+const router: Router = Router({ mergeParams: true });
 
 router.post(
-  "/project/:projectId",
-  param('projectId').isMongoId().withMessage('ID no válido'),
+  "/",
+  param("projectId").isMongoId().withMessage("ID no válido"),
   handleInputErrors,
   checkProjectExists,
   createTaskRules,
