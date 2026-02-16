@@ -28,25 +28,11 @@ export class TaskController {
 
   static getTaskById = async (request: Request, response: Response) => {
    
-
-    const projectId = request.project.id;
-
-    if (projectId !== request.task.project.toString()) {
-      response.status(400).json({ error: "Acción no válida" });
-      return;
-    }
     response.json(request.task);
   };
 
   static updateTaskById = async (request: Request, response: Response) => {
    
-    const projectId = request.project.id;
-
-    if (projectId !== request.task.project.toString()) {
-      response.status(400).json({ error: "Acción no válida" });
-      return;
-    }
-
      request.task.name = request.body.name;
      request.task.description = request.body.description;
      request.task.save();
@@ -56,12 +42,6 @@ export class TaskController {
 
   static deleteTaskById = async (request: Request, response: Response) => {
    
-    const projectId = request.project.id;
-
-    if (projectId !== request.task.project.toString()) {
-      response.status(400).json({ error: "Acción no válida" });
-      return;
-    }
 
     request.project.tasks = request.project.tasks.filter( task => task !== task._id)
   
@@ -71,15 +51,7 @@ export class TaskController {
   };
 
   static updateStatusTaskById = async (request: Request, response: Response) => {
-    const { taskId } = request.params;
     const { status } = request.body;
-
-    const projectId = request.project.id;
-
-    if (projectId !== request.task.project.toString()) {
-      response.status(400).json({ error: "Acción no válida" });
-      return;
-    }
 
     if (!Object.values(taskStatus).includes(status)) {
       response.status(400).json({ error: "Estado de tarea inválido" });

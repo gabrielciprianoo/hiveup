@@ -4,11 +4,12 @@ import { checkProjectExists } from "../middleware/project";
 import { param } from "express-validator";
 import { createTaskRules } from "../validators/task.validators";
 import { handleInputErrors } from "../middleware/validation";
-import { checkTaskExists } from "../middleware/task";
+import { checkTaskExists, taskBelongsToProject } from "../middleware/task";
 
 const router: Router = Router({ mergeParams: true });
 
 router.param("taskId", checkTaskExists);
+router.param("taskId", taskBelongsToProject);
 
 router.post(
   "/",
