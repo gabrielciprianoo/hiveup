@@ -6,6 +6,7 @@ import { param } from "express-validator";
 import { checkProjectExists } from "../middleware/project";
 
  const router: Router = Router();
+ router.param("projectId", checkProjectExists);
 
  router.get('/', ProjectController.getAllProjects);
  router.post('/', 
@@ -23,13 +24,11 @@ router.get('/:projectId',
 router.put('/:projectId',
     param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
-    checkProjectExists,
     ProjectController.updateProject
 );
 router.delete('/:projectId',
     param('projectId').isMongoId().withMessage('ID no válido'),
     handleInputErrors,
-    checkProjectExists,
     ProjectController.deleteProject
 );
 

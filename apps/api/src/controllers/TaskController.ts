@@ -27,66 +27,68 @@ export class TaskController {
   };
 
   static getTaskById = async (request: Request, response: Response) => {
-    const { taskId } = request.params;
-    const task = await Task.findById(taskId);
-
-    if (!task) {
-      response.status(404).json({ error: "Tarea no encontrada" });
-      return;
-    }
+   
 
     const projectId = request.project.id;
 
-    if (projectId !== task.project.toString()) {
+    if (projectId !== request.task.project.toString()) {
       response.status(400).json({ error: "Acción no válida" });
       return;
     }
-    response.json(task);
+    response.json(request.task);
   };
 
   static updateTaskById = async (request: Request, response: Response) => {
-    const { taskId } = request.params;
-    const task = await Task.findById(taskId);
-
-    if (!task) {
-      response.status(404).json({ error: "Tarea no encontrada" });
-      return;
-    }
-
+   
     const projectId = request.project.id;
 
-    if (projectId !== task.project.toString()) {
+    if (projectId !== request.task.project.toString()) {
       response.status(400).json({ error: "Acción no válida" });
       return;
     }
 
-     task.name = request.body.name;
-     task.description = request.body.description;
-     task.save();
+     request.task.name = request.body.name;
+     request.task.description = request.body.description;
+     request.task.save();
 
     response.send("Tarea actualizada correctamente");
   };
 
   static deleteTaskById = async (request: Request, response: Response) => {
-    const { taskId } = request.params;
-    const task = await Task.findById(taskId);
-
-    if (!task) {
-      response.status(404).json({ error: "Tarea no encontrada" });
-      return;
-    }
-
+   
     const projectId = request.project.id;
 
-    if (projectId !== task.project.toString()) {
+    if (projectId !== request.task.project.toString()) {
       response.status(400).json({ error: "Acción no válida" });
       return;
     }
 
     request.project.tasks = request.project.tasks.filter( task => task !== task._id)
   
-    await Promise.allSettled([task.deleteOne(), request.project.save()])
+    await Promise.allSettled([request.task.deleteOne(), request.project.save()])
 
     response.send("Tarea eliminada correctamente");
+  };
+
+  static updateStatusTaskById = async (request: Request, response: Response) => {
+    const { taskId } = request.params;
+    const { status } = request.body;
+
+    const projectId = request.project.id;
+
+    if (projectId !== request.task.project.toString()) {
+      response.status(400).json({ error: "Acción no válida" });
+      return;
+    }
+
+    if (!Object.values(taskStatus).includes(status)) {
+      response.status(400).json({ error: "Estado de tarea inválido" });
+      return;
+    }
+
+    request.task.status = status as typeof taskStatus[keyof typeof taskStatus];
+    
+    await request.task.save();
+    response.send("Estado de tarea actualizado correctamente");
   };
 }
