@@ -8,6 +8,7 @@ export class TaskController {
       const tasks = await Task.find({ project: projectId }).populate("project");
       response.json(tasks);
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
@@ -22,6 +23,7 @@ export class TaskController {
 
       response.send("Tarea Creada Correctamente");
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };

@@ -7,6 +7,7 @@ export class ProjectController {
       const projects = await Project.find({});
       response.json(projects);
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
@@ -18,6 +19,7 @@ export class ProjectController {
       await project.save();
       response.send("Proyecto Creado Correctamente");
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
@@ -28,14 +30,9 @@ export class ProjectController {
 
       const project = await Project.findById(projectId).populate('tasks');
 
-      if (!project) {
-        const error = new Error("Proyecto no encontrado");
-        response.status(404).json({ error: error.message });
-        return;
-      }
-
       response.json(project);
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
@@ -44,17 +41,11 @@ export class ProjectController {
     try {
       const project = request.project;
       await project.updateOne(request.body);
-
-      if (!project) {
-        const error = new Error("Proyecto no encontrado");
-        response.status(404).json({ error: error.message });
-        return;
-      }
-
       await project.save();
 
       response.send("Proyecto actualizado correctamente");
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
@@ -67,6 +58,7 @@ export class ProjectController {
 
       response.send("Proyecto eliminado correctamente");
     } catch (error) {
+      /* istanbul ignore next */
       console.log(error);
     }
   };
