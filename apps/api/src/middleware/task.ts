@@ -20,7 +20,7 @@ export async function checkTaskExists(
     const task = await Task.findById(taskId);
 
     if (!task) {
-      const error = new Error("Tarea no encontrado");
+      const error = new Error("Tarea no encontrada");
       response.status(404).json({ error: error.message });
       return;
     }
