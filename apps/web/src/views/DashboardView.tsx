@@ -10,12 +10,28 @@ interface Feature {
 }
 
 const FEATURES: Feature[] = [
-  { icon: Layers, title: "Gestiona", description: "Organiza proyectos y visualiza el progreso en un solo lugar." },
-  { icon: Users, title: "Colabora", description: "Trabaja en equipo sin fricciones y construye junto a otros." },
-  { icon: TrendingUp, title: "Crece", description: "Impulsa tus ideas desde el concepto hasta la ejecucion." },
+  {
+    icon: Layers,
+    title: "Gestiona",
+    description: "Organiza proyectos y visualiza el progreso en un solo lugar.",
+  },
+  {
+    icon: Users,
+    title: "Colabora",
+    description: "Trabaja en equipo sin fricciones y construye junto a otros.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Crece",
+    description: "Impulsa tus ideas desde el concepto hasta la ejecucion.",
+  },
 ];
 
-const FeatureCard = memo(function FeatureCard({ feature }: { feature: Feature }) {
+const FeatureCard = memo(function FeatureCard({
+  feature,
+}: {
+  feature: Feature;
+}) {
   const Icon = feature.icon;
   return (
     <div className="group p-8 lg:p-10 bg-surface rounded-xl border border-border/40 hover:border-primary/30 transition-colors duration-150">
@@ -30,25 +46,28 @@ const FeatureCard = memo(function FeatureCard({ feature }: { feature: Feature })
 
 function WelcomeBanner() {
   const { user } = useUser();
-  
+
   return (
     <div className="text-center mb-20">
       <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-lg mb-6">
         <span className="w-2 h-2 bg-primary rounded-full" />
-        <span className="text-sm font-medium text-primary">Bienvenido, {user?.name ?? "Usuario"}</span>
+        <span className="text-sm font-medium text-primary">
+          Bienvenido, {user?.name ?? "Usuario"}
+        </span>
       </div>
-      
+
       <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-6xl font-bold text-dark tracking-tight leading-none">
         Tu trabajo, <span className="text-primary">organizado.</span>
       </h1>
-      
+
       <p className="mt-6 text-lg sm:text-xl text-secondary leading-relaxed max-w-2xl mx-auto">
-        Gestiona proyectos, colabora con tu equipo e impulsa tus ideas hacia resultados extraordinarios.
+        Gestiona proyectos, colabora con tu equipo e impulsa tus ideas hacia
+        resultados extraordinarios.
       </p>
-      
+
       <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
         <Link
-          to="/proyectos/nuevo"
+          to="/projects/create"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-active transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
         >
           <Plus className="w-5 h-5" />
@@ -89,7 +108,7 @@ export default function DashboardView() {
   return (
     <div className="min-h-[85vh] flex flex-col relative overflow-hidden">
       <Background />
-      
+
       <div className="flex-1 flex items-center relative z-10">
         <div className="w-full max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-20">
           <WelcomeBanner />
