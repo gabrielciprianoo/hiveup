@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, Plus, FolderKanban, Lightbulb, Target } from "lucide-react";
 import { ProjectForm } from "../../components";
 import type { ProjectFormData } from "../../types";
+import { createProject } from "../../api/ProjectAPI";
 
 export default function CreateProjectView() {
   const initialValues: ProjectFormData = {
@@ -20,7 +21,7 @@ export default function CreateProjectView() {
   });
 
   const handleFormSubmit = (data: ProjectFormData) => {
-    console.log(data);
+    createProject(data);
   };
 
   return (
