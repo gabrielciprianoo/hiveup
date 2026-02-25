@@ -40,6 +40,7 @@ export default function ProjectForm({ register, errors }: ProjectFormType) {
           placeholder="Ej: Redesign Website 2024"
           {...register("projectName", {
             required: "El nombre del proyecto es obligatorio",
+            minLength: { value: 3, message: "Mínimo 3 caracteres" },
           })}
         />
         {errors.projectName && (
@@ -61,6 +62,7 @@ export default function ProjectForm({ register, errors }: ProjectFormType) {
           placeholder="Ej: Acme Corporation"
           {...register("clientName", {
             required: "El nombre del cliente es obligatorio",
+            minLength: { value: 3, message: "Mínimo 3 caracteres" },
           })}
         />
         {errors.clientName && (
@@ -81,6 +83,7 @@ export default function ProjectForm({ register, errors }: ProjectFormType) {
           placeholder="Describe los objetivos, alcance y entregables del proyecto..."
           {...register("description", {
             required: "Una descripción del proyecto es obligatoria",
+            minLength: { value: 10, message: "Mínimo 10 caracteres" },
           })}
         />
         {errors.description && (
