@@ -4,7 +4,8 @@ import { ArrowLeft, Plus, FolderKanban, Lightbulb, Target } from "lucide-react";
 import { ProjectForm } from "../../components";
 import type { ProjectFormData } from "../../types";
 import { createProject } from "../../api/ProjectAPI";
-import { sileo } from "sileo";
+import { useMutation } from "@tanstack/react-query";
+import { toastSuccess, toastError } from "../../lib/toast-helpers";
 
 export default function CreateProjectView() {
   const navigate = useNavigate();
@@ -22,22 +23,18 @@ export default function CreateProjectView() {
     defaultValues: initialValues,
   });
 
-  const handleFormSubmit = async (data: ProjectFormData) => {
-    const result = await createProject(data);
-    
-    if (result.success) {
-      sileo.success({
-        title: "Proyecto creado",
-        description: "El proyecto se ha creado correctamente",
-      });
+  const { mutate } = useMutation({
+    mutationFn: createProject,
+    onError: (error) => {
+      toastError("Ocurrio un error", error.message);
+    },
+    onSuccess: () => {
+      toastSuccess("Proyecto creado", "registraste un nuevo proyecto");
       navigate("/");
-    } else {
-      sileo.error({
-        title: "Error",
-        description: result.error || "No se pudo crear el proyecto",
-      });
-    }
-  };
+    },
+  });
+
+  const handleFormSubmit = async (data: ProjectFormData) => mutate(data);
 
   return (
     <div className="min-h-[85vh] flex flex-col relative overflow-hidden">
