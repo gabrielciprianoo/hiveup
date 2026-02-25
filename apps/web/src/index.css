@@ -17,7 +17,11 @@
   --sileo-state-error: #EF4444;
   --sileo-state-warning: #F59E0B;
   --sileo-state-info: #3B82F6;
+  --sileo-width: 360px;
+  --sileo-gap: 12px;
 }
+
+
 
 body {
   font-family: var(--font-sans);
