@@ -1,4 +1,4 @@
-import React from "react";
+
 import { sileo } from "sileo";
 import { CheckCircle, XCircle, AlertTriangle, Info } from "lucide-react";
 
