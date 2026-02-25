@@ -12,18 +12,9 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <UserProvider>
-        <Toaster
-          position="top-right"
-          offset={{ top: 60, right: 16 }}
-          options={{
-            fill: "#FFFFFF",
-            roundness: 12,
-            styles: {
-              title: "text-dark font-medium",
-              description: "text-dark/70",
-              badge: "bg-primary/20",
-            },
-          }}
+        <Toaster 
+          position="top-right" 
+          offset={{ top: 60, right: 16, left: 16 }}
         />
         <Router />
       </UserProvider>
