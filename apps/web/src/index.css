@@ -12,6 +12,13 @@
   --font-sans: "Inter", sans-serif;
 }
 
+:root {
+  --sileo-state-success: #10B981;
+  --sileo-state-error: #EF4444;
+  --sileo-state-warning: #F59E0B;
+  --sileo-state-info: #3B82F6;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: var(--color-background);
