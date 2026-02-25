@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Plus, FolderKanban, Lightbulb, Target } from "lucide-react";
 import { ProjectForm } from "../../components";
 import type { ProjectFormData } from "../../types";
 import { createProject } from "../../api/ProjectAPI";
+import { sileo } from "sileo";
 
 export default function CreateProjectView() {
+  const navigate = useNavigate();
   const initialValues: ProjectFormData = {
     projectName: "",
     clientName: "",
@@ -20,8 +22,21 @@ export default function CreateProjectView() {
     defaultValues: initialValues,
   });
 
-  const handleFormSubmit = (data: ProjectFormData) => {
-    createProject(data);
+  const handleFormSubmit = async (data: ProjectFormData) => {
+    const result = await createProject(data);
+    
+    if (result.success) {
+      sileo.success({
+        title: "Proyecto creado",
+        description: "El proyecto se ha creado correctamente",
+      });
+      navigate("/");
+    } else {
+      sileo.error({
+        title: "Error",
+        description: result.error || "No se pudo crear el proyecto",
+      });
+    }
   };
 
   return (
