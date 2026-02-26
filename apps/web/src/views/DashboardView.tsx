@@ -74,7 +74,7 @@ function WelcomeBanner() {
           Nuevo proyecto
         </Link>
         <Link
-          to="/proyectos"
+          to="/projects"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface text-dark rounded-lg font-medium border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
         >
           Ver proyectos
