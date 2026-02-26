@@ -1,4 +1,4 @@
-import { object, string, type InferOutput } from "valibot";
+import { array, object, string, type InferOutput } from "valibot";
 
 /* Projects */
 export const projectSchema = object({
@@ -7,6 +7,8 @@ export const projectSchema = object({
   clientName: string(),
   description: string(),
 });
+
+export const ProjectsSchema = array(projectSchema);
 
 export type Project = InferOutput<typeof projectSchema>;
 export type ProjectFormData = Pick<
