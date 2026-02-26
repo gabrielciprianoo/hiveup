@@ -61,14 +61,14 @@ export function Header({ scrolled, menuOpen, onToggleMenu }: HeaderProps) {
 
           <div className="hidden md:flex items-center gap-2">
             <Link
-              to="/ajustes"
+              to="/settings"
               className="p-2 rounded-lg text-secondary hover:text-dark hover:bg-secondary/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               title="Ajustes"
             >
               <Settings className="w-5 h-5" />
             </Link>
             <Link
-              to="/perfil"
+              to="/profile"
               className="group flex items-center gap-2 px-4 py-2 rounded-lg border border-border hover:border-primary/30 hover:bg-primary/5 text-dark text-sm font-medium transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             >
               <User className="w-4 h-4 text-secondary group-hover:text-primary transition-colors duration-150" />

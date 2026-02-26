@@ -8,5 +8,5 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/proyectos", icon: FolderKanban, label: "Proyectos" },
+  { to: "/projects", icon: FolderKanban, label: "Proyectos" },
 ];

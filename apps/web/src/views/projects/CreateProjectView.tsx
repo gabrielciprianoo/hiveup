@@ -30,7 +30,7 @@ export default function CreateProjectView() {
     },
     onSuccess: () => {
       toastSuccess("Proyecto creado", "registraste un nuevo proyecto");
-      navigate("/");
+      navigate("/projects");
     },
   });
 
