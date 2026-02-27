@@ -5,6 +5,7 @@ import Router from "./router";
 import { UserProvider } from "./contexts";
 import { Toaster } from "sileo";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
           offset={{ top: 60, right: 16, left: 16 }}
         />
         <Router />
+        <ReactQueryDevtools/>
       </UserProvider>
     </QueryClientProvider>
   </StrictMode>,
