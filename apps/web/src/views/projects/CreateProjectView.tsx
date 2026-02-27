@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Plus, FolderKanban, Lightbulb, Target } from "lucide-react";
-import { ProjectForm } from "../../components";
+import { ArrowLeft, Plus } from "lucide-react";
+import { ProjectForm, ProjectTips } from "../../components";
 import type { ProjectFormData } from "../../types";
 import { createProject } from "../../api/ProjectAPI";
 import { useMutation } from "@tanstack/react-query";
 import { toastSuccess, toastError } from "../../lib/toast-helpers";
+import { PROJECT_TIPS } from "./constants/projectTips";
 
 export default function CreateProjectView() {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ export default function CreateProjectView() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div className="order-2 lg:order-1">
             <Link
-              to="/proyectos"
+              to="/projects"
               className="inline-flex items-center gap-2 text-secondary hover:text-dark transition-colors mb-6 group"
             >
               <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
@@ -68,7 +69,7 @@ export default function CreateProjectView() {
 
                 <div className="mt-8 pt-6 border-t border-border/60 flex flex-col sm:flex-row gap-3">
                   <Link
-                    to="/proyectos"
+                    to="/projects"
                     className="sm:flex-1 px-6 py-3 text-center border border-border rounded-lg font-medium text-dark hover:border-primary/50 hover:bg-primary/5 transition-colors"
                   >
                     Cancelar
@@ -92,56 +93,7 @@ export default function CreateProjectView() {
             </div>
           </div>
 
-          <div className="order-1 lg:order-2 hidden lg:block pt-16">
-            <div className="sticky top-24">
-              <h2 className="text-lg font-semibold text-dark mb-6">
-                Consejos para tu proyecto
-              </h2>
-              <div className="space-y-4">
-                <div className="flex gap-4 p-4 bg-surface/60 rounded-xl border border-border/40">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FolderKanban className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-dark text-sm">
-                      Nombre claro
-                    </h3>
-                    <p className="text-secondary text-sm mt-0.5">
-                      Usa un nombre descriptivo que identifique facilmente el
-                      proyecto
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-4 p-4 bg-surface/60 rounded-xl border border-border/40">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Target className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-dark text-sm">
-                      Cliente definido
-                    </h3>
-                    <p className="text-secondary text-sm mt-0.5">
-                      Asigna el proyecto al cliente correcto para mejor
-                      seguimiento
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-4 p-4 bg-surface/60 rounded-xl border border-border/40">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Lightbulb className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-dark text-sm">
-                      Descripción detallada
-                    </h3>
-                    <p className="text-secondary text-sm mt-0.5">
-                      Incluye objetivos y entregables para mantener el enfoque
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ProjectTips tips={PROJECT_TIPS} />
         </div>
       </div>
     </div>
