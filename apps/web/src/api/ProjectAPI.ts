@@ -1,6 +1,11 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { ProjectsSchema, type ProjectFormData } from "../types";
+import {
+  projectSchema,
+  ProjectsSchema,
+  type Project,
+  type ProjectFormData,
+} from "../types";
 import { safeParse } from "valibot";
 
 export type CreateProjectResponse = {
@@ -27,6 +32,36 @@ export async function getProjects() {
     if (response.success) {
       return response.output;
     }
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
+export async function getProjectById(projectId: Project["_id"]) {
+  try {
+    const { data } = await api.get(`/projects/${projectId}`);
+    const response = safeParse(projectSchema, data);
+
+    if (response.success) {
+      return response.output;
+    }
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
+type updateProjectAPI = {
+  projectId: Project["_id"];
+  formData: ProjectFormData;
+};
+export async function updateProject({ projectId, formData }: updateProjectAPI) {
+  try {
+    const { data } = await api.put<string>(`/projects/${projectId}`, formData);
+    return data
   } catch (error) {
     if (isAxiosError(error) && error.response) {
       throw new Error(error.response.data.error);
