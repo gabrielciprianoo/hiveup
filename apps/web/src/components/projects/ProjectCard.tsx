@@ -5,6 +5,7 @@ import type { Project } from "../../types";
 
 type ProjectCardProps = {
   project: Project;
+  onDelete: ( projectId: Project['_id']) => void;
 };
 
 function ProjectPreview({ description }: { description: string }) {
@@ -48,7 +49,7 @@ function CardGlow() {
   );
 }
 
-function CardActions({ projectId }: { projectId: string }) {
+function CardActions( {project, onDelete} : ProjectCardProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -67,7 +68,7 @@ function CardActions({ projectId }: { projectId: string }) {
         {isOpen && (
           <div className="absolute right-0 top-full mt-1 w-36 py-1 bg-surface rounded-lg border border-border/40 shadow-lg z-10">
             <Link
-              to={`/projects/${projectId}/edit`}
+              to={`/projects/${project._id}/edit`}
               onClick={(e) => e.stopPropagation()}
               className="w-full flex items-center gap-2 px-3 py-2 text-sm text-dark hover:bg-primary/5 transition-colors"
             >
@@ -77,6 +78,7 @@ function CardActions({ projectId }: { projectId: string }) {
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                onDelete(project._id)
               }}
               className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
             >
@@ -90,11 +92,11 @@ function CardActions({ projectId }: { projectId: string }) {
   );
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+export default function ProjectCard({ project, onDelete}: ProjectCardProps) {
   return (
     <div className="group relative bg-surface rounded-xl border border-border/30 hover:border-primary/40 transition-all duration-200 cursor-pointer hover:-translate-y-0.5">
       <CardGlow />
-      <CardActions projectId={project._id} />
+      <CardActions project={project} onDelete={onDelete} />
 
       <div className="p-5">
         <div className="flex items-start gap-3 mb-4">

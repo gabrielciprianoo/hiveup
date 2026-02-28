@@ -1,15 +1,35 @@
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Plus, FolderOpen } from "lucide-react";
-import { getProjects } from "../../api/ProjectAPI";
+import { deleteProject, getProjects } from "../../api/ProjectAPI";
 import type { Project } from "../../types";
 import ProjectCard from "../../components/projects/ProjectCard";
+import { toastError, toastSuccess } from "../../lib/toast-helpers";
 
 function ProjectsGrid({ projects }: { projects: Project[] }) {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: deleteProject,
+    onError: (error) => {
+      toastError("Ocurrio un error ", error.message);
+    },
+    onSuccess: (data) => {
+      toastSuccess("Proyecto eliminado", data);
+      queryClient.invalidateQueries({ queryKey: ["projects"] });
+    },
+  });
+
+  const onDeleteProject = (projecId: Project["_id"]) => {
+    mutation.mutate(projecId);
+  };
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {projects.map((project) => (
-        <ProjectCard key={project._id} project={project} />
+        <ProjectCard
+          key={project._id}
+          project={project}
+          onDelete={onDeleteProject}
+        />
       ))}
     </div>
   );
@@ -50,14 +70,15 @@ function EmptyState() {
       <div className="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
         <FolderOpen className="w-12 h-12 text-primary" />
       </div>
-      
+
       <h3 className="text-xl font-semibold text-dark mb-2">
         No hay proyectos aún
       </h3>
       <p className="text-secondary max-w-md mb-8">
-        Crea tu primer proyecto para comenzar a organizar tu trabajo y colaborar con tu equipo.
+        Crea tu primer proyecto para comenzar a organizar tu trabajo y colaborar
+        con tu equipo.
       </p>
-      
+
       <Link
         to="/projects/create"
         className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-active transition-colors duration-150"
@@ -76,7 +97,7 @@ function PageHeader() {
         <h1 className="text-2xl sm:text-3xl font-bold text-dark">Proyectos</h1>
         <p className="text-secondary mt-1">Gestiona tus proyectos y clientes</p>
       </div>
-      
+
       <Link
         to="/projects/create"
         className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary text-white rounded-lg font-medium hover:bg-active transition-colors duration-150"
@@ -107,20 +128,20 @@ export default function ProjectsView() {
   return (
     <div className="min-h-[85vh] relative overflow-hidden">
       <Background />
-      
+
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-8 py-8 lg:py-10">
         <PageHeader />
-        
+
         {isLoading && <ProjectsSkeleton />}
-        
+
         {error && (
           <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600">
             Error al cargar los proyectos: {error.message}
           </div>
         )}
-        
+
         {!isLoading && !error && data && data.length === 0 && <EmptyState />}
-        
+
         {!isLoading && !error && data && data.length > 0 && (
           <ProjectsGrid projects={data} />
         )}
