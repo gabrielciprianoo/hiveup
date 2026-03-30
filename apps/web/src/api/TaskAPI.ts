@@ -1,11 +1,12 @@
 import { isAxiosError } from "axios";
 import api from "../lib/axios";
-import { type Task, type TaskFormData } from "../types";
+import { type Task, type TaskFormData, type TaskStatus } from "../types";
 
 export type TaskAPIParams = {
   projectId: Task["_id"];
   taskId: Task["_id"];
   formData: TaskFormData;
+  status: TaskStatus;
 };
 
 export async function createTask({
@@ -61,6 +62,24 @@ export async function updateTask({
     const { data } = await api.put<string>(
       `/projects/${projectId}/tasks/${taskId}`,
       formData,
+    );
+    return data;
+  } catch (error) {
+    if (isAxiosError(error) && error.response) {
+      throw new Error(error.response.data.error);
+    }
+  }
+}
+
+export async function updateTaskStatus({
+  projectId,
+  taskId,
+  status,
+}: Pick<TaskAPIParams, "projectId" | "taskId" | "status">) {
+  try {
+    const { data } = await api.post<string>(
+      `/projects/${projectId}/tasks/${taskId}/status`,
+      { status },
     );
     return data;
   } catch (error) {
