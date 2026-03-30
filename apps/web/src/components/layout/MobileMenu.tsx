@@ -31,6 +31,7 @@ export function MobileMenu({ isOpen, menuRef, onClose }: MobileMenuProps) {
             <img src="/logo_hiveup.svg" alt="HiveUp" className="h-7 w-auto" />
             <button
               onClick={onClose}
+              title="Cerrar menú"
               className="p-2 rounded-lg text-secondary hover:text-dark hover:bg-secondary/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             >
               <X className="w-5 h-5" />

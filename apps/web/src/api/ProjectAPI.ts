@@ -68,6 +68,7 @@ export async function updateProject({ projectId, formData }: updateProjectAPI) {
     }
   }
 }
+
 export async function deleteProject(projectId: Project["_id"]) {
   try {
     const { data } = await api.delete<string>(`/projects/${projectId}`);
@@ -78,3 +79,4 @@ export async function deleteProject(projectId: Project["_id"]) {
     }
   }
 }
+

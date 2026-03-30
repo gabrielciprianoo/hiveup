@@ -77,12 +77,12 @@ export function Header({ scrolled, menuOpen, onToggleMenu }: HeaderProps) {
           </div>
 
           <button
+            type="button"
             onClick={onToggleMenu}
             className={`md:hidden p-2 rounded-lg transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 ${
               menuOpen ? "bg-primary text-white" : "text-dark hover:bg-secondary/5"
             }`}
             aria-label="Menu"
-            aria-expanded={menuOpen}
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
