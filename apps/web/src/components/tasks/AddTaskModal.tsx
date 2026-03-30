@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X, ListTodo } from "lucide-react";
 import { createTask } from "../../api/TaskAPI";
 import { toastSuccess, toastError } from "../../lib/toast-helpers";
@@ -11,6 +11,7 @@ type AddTaskModalProps = {
 };
 
 export default function AddTaskModal({ projectId, onClose }: AddTaskModalProps) {
+  const queryClient = useQueryClient();
   const initialValues: TaskFormData = {
     name: "",
     description: "",
@@ -30,6 +31,7 @@ export default function AddTaskModal({ projectId, onClose }: AddTaskModalProps) 
       toastError("Error al crear tarea", error.message);
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
       toastSuccess("Tarea creada", "La tarea se ha registrado correctamente");
       onClose();
     },
