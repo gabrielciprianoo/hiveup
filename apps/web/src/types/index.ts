@@ -1,20 +1,6 @@
-import { array, object, string, type InferOutput } from "valibot";
+import { array, object, string, optional, type InferOutput } from "valibot";
 
-/* Projects */
-export const projectSchema = object({
-  _id: string(),
-  projectName: string(),
-  clientName: string(),
-  description: string(),
-});
 
-export const ProjectsSchema = array(projectSchema);
-
-export type Project = InferOutput<typeof projectSchema>;
-export type ProjectFormData = Pick<
-  Project,
-  "projectName" | "clientName" | "description"
->;
 
 /* Tasks */
 export const taskStatus = {
@@ -39,3 +25,20 @@ export const taskSchema = object({
 
 export type Task = InferOutput<typeof taskSchema>;
 export type TaskFormData = Pick<Task, "name" | "description">;
+
+/* Projects */
+export const projectSchema = object({
+  _id: string(),
+  projectName: string(),
+  clientName: string(),
+  description: string(),
+  tasks: optional(array(taskSchema)),
+});
+
+export const ProjectsSchema = array(projectSchema);
+
+export type Project = InferOutput<typeof projectSchema>;
+export type ProjectFormData = Pick<
+  Project,
+  "projectName" | "clientName" | "description"
+>;
