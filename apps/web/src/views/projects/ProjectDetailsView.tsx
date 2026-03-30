@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { getProjectById } from "../../api/ProjectAPI";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Folder, Pencil, ListTodo, Plus } from "lucide-react";
-import { AddTaskModal } from "../../components";
+import { AddTaskModal, TasksList } from "../../components";
 
 function HeaderSkeleton() {
   return (
@@ -121,7 +121,7 @@ export default function ProjectDetailsView() {
         </button>
       </div>
 
-      {/* Tasks section will go here */}
+      {data?.tasks && <TasksList tasks={data.tasks} />}
 
       {showModal && <AddTaskModal projectId={projectId!} onClose={closeModal} />}
     </div>
