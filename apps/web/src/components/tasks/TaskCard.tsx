@@ -17,19 +17,33 @@ const statusColors: Record<TaskStatus, string> = {
 };
 
 export default function TaskCard({ task, statusColor }: TaskCardProps) {
-  const [showPopup, setShowPopup] = useState(false);
+  const [popupPos, setPopupPos] = useState<{ top: number; right: number } | null>(null);
   const popupRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (popupRef.current && !popupRef.current.contains(event.target as Node)) {
-        setShowPopup(false);
+        setPopupPos(null);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  function openPopup(e: React.MouseEvent) {
+    e.stopPropagation();
+    if (popupPos) {
+      setPopupPos(null);
+      return;
+    }
+    const rect = buttonRef.current!.getBoundingClientRect();
+    setPopupPos({
+      top: rect.bottom + 4,
+      right: window.innerWidth - rect.right,
+    });
+  }
 
   return (
     <div
@@ -39,10 +53,8 @@ export default function TaskCard({ task, statusColor }: TaskCardProps) {
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium text-dark flex-1">{task.name}</p>
         <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowPopup(!showPopup);
-          }}
+          ref={buttonRef}
+          onClick={openPopup}
           className="p-1 rounded-md text-secondary hover:text-dark hover:bg-border/40 transition-colors"
         >
           <MoreHorizontal className="w-4 h-4" />
@@ -55,15 +67,16 @@ export default function TaskCard({ task, statusColor }: TaskCardProps) {
         </p>
       )}
 
-      {showPopup && (
+      {popupPos && (
         <div
           ref={popupRef}
-          className="absolute right-2 top-8 z-10 w-32 bg-surface rounded-lg border border-border/60 shadow-lg py-1"
+          className="fixed z-50 w-32 bg-surface rounded-lg border border-border/60 shadow-lg py-1"
+          style={{ top: popupPos.top, right: popupPos.right }}
         >
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setShowPopup(false);
+              setPopupPos(null);
               navigate(`?editTask=${task._id}`);
             }}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-dark hover:bg-border/40 transition-colors"
@@ -74,7 +87,8 @@ export default function TaskCard({ task, statusColor }: TaskCardProps) {
           <button
             onClick={(e) => {
               e.stopPropagation();
-              setShowPopup(false);
+              setPopupPos(null);
+              navigate(`?deleteTask=${task._id}`);
             }}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-50 transition-colors"
           >
