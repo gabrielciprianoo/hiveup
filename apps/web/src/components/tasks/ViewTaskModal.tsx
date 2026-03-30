@@ -1,6 +1,7 @@
+import { useState, useRef, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { X, CalendarPlus, RefreshCw, Check } from "lucide-react";
+import { X, CalendarPlus, RefreshCw, ChevronDown, Check } from "lucide-react";
 import type { Task, TaskStatus } from "../../types";
 import { taskStatus } from "../../types";
 import { updateTaskStatus } from "../../api/TaskAPI";
@@ -12,15 +13,15 @@ type StatusMeta = {
   dot: string;
   bg: string;
   text: string;
-  ring: string;
+  border: string;
 };
 
 const statusMeta: Record<TaskStatus, StatusMeta> = {
-  pending:     { label: "Pendiente",   dot: "bg-gray-400",    bg: "bg-gray-50",    text: "text-gray-600",   ring: "ring-gray-300" },
-  onHold:      { label: "En espera",   dot: "bg-red-500",     bg: "bg-red-50",     text: "text-red-600",    ring: "ring-red-300" },
-  inProgress:  { label: "En progreso", dot: "bg-blue-500",    bg: "bg-blue-50",    text: "text-blue-600",   ring: "ring-blue-300" },
-  underReview: { label: "En revisión", dot: "bg-amber-500",   bg: "bg-amber-50",   text: "text-amber-600",  ring: "ring-amber-300" },
-  completed:   { label: "Completada",  dot: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", ring: "ring-emerald-300" },
+  pending:     { label: "Pendiente",   dot: "bg-gray-400",    bg: "bg-gray-50",    text: "text-gray-600",    border: "border-gray-200" },
+  onHold:      { label: "En espera",   dot: "bg-red-500",     bg: "bg-red-50",     text: "text-red-600",     border: "border-red-200" },
+  inProgress:  { label: "En progreso", dot: "bg-blue-500",    bg: "bg-blue-50",    text: "text-blue-600",    border: "border-blue-200" },
+  underReview: { label: "En revisión", dot: "bg-amber-500",   bg: "bg-amber-50",   text: "text-amber-600",   border: "border-amber-200" },
+  completed:   { label: "Completada",  dot: "bg-emerald-500", bg: "bg-emerald-50", text: "text-emerald-600", border: "border-emerald-200" },
 };
 
 const statusOrder: TaskStatus[] = [
@@ -41,11 +42,15 @@ export default function ViewTaskModal({ task, projectId }: ViewTaskModalProps) {
   const location = useLocation();
   const queryClient = useQueryClient();
 
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number } | null>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const closeModal = () => navigate(location.pathname, { replace: true });
 
   const current = statusMeta[task.status as TaskStatus] ?? statusMeta.pending;
 
-  const { mutate, isPending, variables } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (status: TaskStatus) =>
       updateTaskStatus({ projectId, taskId: task._id, status }),
     onError: (error: Error) => {
@@ -56,6 +61,31 @@ export default function ViewTaskModal({ task, projectId }: ViewTaskModalProps) {
       queryClient.invalidateQueries({ queryKey: ["task", task._id] });
     },
   });
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node) &&
+        !triggerRef.current?.contains(e.target as Node)
+      ) {
+        setDropdownPos(null);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  function openDropdown() {
+    if (dropdownPos) { setDropdownPos(null); return; }
+    const rect = triggerRef.current!.getBoundingClientRect();
+    setDropdownPos({ top: rect.bottom + 6, left: rect.left, width: rect.width });
+  }
+
+  function selectStatus(s: TaskStatus) {
+    setDropdownPos(null);
+    if (s !== task.status) mutate(s);
+  }
 
   return (
     <div
@@ -76,7 +106,7 @@ export default function ViewTaskModal({ task, projectId }: ViewTaskModalProps) {
               <h2 className="text-base font-semibold text-dark leading-snug break-words">
                 {task.name}
               </h2>
-              <span className={`inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium border ${current.bg} ${current.text}`}>
+              <span className={`inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full text-xs font-medium border ${current.bg} ${current.text} ${current.border}`}>
                 {current.label}
               </span>
             </div>
@@ -103,39 +133,28 @@ export default function ViewTaskModal({ task, projectId }: ViewTaskModalProps) {
 
           {/* Status selector */}
           <div>
-            <p className="text-xs font-medium text-secondary uppercase tracking-wider mb-2">
-              Cambiar estado
-            </p>
-            <div className="grid grid-cols-1 gap-1.5">
-              {statusOrder.map((s) => {
-                const meta = statusMeta[s];
-                const isActive = task.status === s;
-                const isLoading = isPending && variables === s;
-
-                return (
-                  <button
-                    key={s}
-                    disabled={isPending}
-                    onClick={() => !isActive && mutate(s)}
-                    className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all duration-150
-                      ${isActive
-                        ? `${meta.bg} ${meta.text} border-transparent ring-2 ${meta.ring} cursor-default`
-                        : "bg-background text-secondary border-border/50 hover:border-border hover:text-dark hover:bg-border/20 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                      }`}
-                  >
-                    <span className={`w-2 h-2 rounded-full flex-shrink-0 ${meta.dot}`} />
-                    <span className="flex-1 text-left">{meta.label}</span>
-                    {isActive && !isLoading && <Check className="w-3.5 h-3.5" />}
-                    {isLoading && (
-                      <svg className="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
-                      </svg>
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+            <label className="text-xs font-medium text-secondary uppercase tracking-wider mb-2 block">
+              Estado
+            </label>
+            <button
+              ref={triggerRef}
+              disabled={isPending}
+              onClick={openDropdown}
+              className={`w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-lg border text-sm font-medium transition-all
+                ${current.bg} ${current.text} ${current.border}
+                hover:brightness-95 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer`}
+            >
+              <span className={`w-2 h-2 rounded-full flex-shrink-0 ${current.dot}`} />
+              <span className="flex-1 text-left">{current.label}</span>
+              {isPending ? (
+                <svg className="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 00-8 8h4z" />
+                </svg>
+              ) : (
+                <ChevronDown className={`w-4 h-4 transition-transform ${dropdownPos ? "rotate-180" : ""}`} />
+              )}
+            </button>
           </div>
 
           {/* Dates */}
@@ -180,6 +199,36 @@ export default function ViewTaskModal({ task, projectId }: ViewTaskModalProps) {
           </button>
         </div>
       </div>
+
+      {/* Dropdown portal — rendered outside the modal card so z-index is unaffected */}
+      {dropdownPos && (
+        <div
+          ref={dropdownRef}
+          className="fixed z-[60] bg-surface rounded-xl border border-border/60 shadow-lg py-1.5 overflow-hidden"
+          style={{ top: dropdownPos.top, left: dropdownPos.left, width: dropdownPos.width }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {statusOrder.map((s) => {
+            const meta = statusMeta[s];
+            const isActive = task.status === s;
+            return (
+              <button
+                key={s}
+                onClick={() => selectStatus(s)}
+                className={`w-full flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium transition-colors
+                  ${isActive
+                    ? `${meta.bg} ${meta.text}`
+                    : "text-dark hover:bg-border/30"
+                  }`}
+              >
+                <span className={`w-2 h-2 rounded-full flex-shrink-0 ${meta.dot}`} />
+                <span className="flex-1 text-left">{meta.label}</span>
+                {isActive && <Check className={`w-3.5 h-3.5 ${meta.text}`} />}
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
