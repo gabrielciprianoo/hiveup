@@ -60,6 +60,7 @@ function CardActions( {project, onDelete} : ProjectCardProps) {
             e.stopPropagation();
             setIsOpen(!isOpen);
           }}
+          title="Más opciones"
           className="p-1.5 rounded-lg bg-surface/80 backdrop-blur-sm border border-border/30 hover:bg-surface hover:border-primary/30 transition-all opacity-0 group-hover:opacity-100"
         >
           <MoreVertical className="w-4 h-4 text-secondary" />
@@ -118,7 +119,7 @@ export default function ProjectCard({ project, onDelete}: ProjectCardProps) {
           <ProjectMeta client={project.clientName} />
           
           <div className="flex items-center gap-1 text-primary/80 text-sm font-medium group-hover:translate-x-0.5 transition-transform">
-            <span>Ver</span>
+            <Link to={`/projects/${project._id}`}>Ver</Link>
             <ArrowUpRight className="w-4 h-4" />
           </div>
         </div>
