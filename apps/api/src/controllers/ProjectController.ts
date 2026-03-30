@@ -4,7 +4,7 @@ import Project from "../models/Project";
 export class ProjectController {
   static getAllProjects = async (request: Request, response: Response) => {
     try {
-      const projects = await Project.find({});
+      const projects = await Project.find({}).populate('tasks');
       response.json(projects);
     } catch (error) {
       /* istanbul ignore next */
