@@ -26,10 +26,10 @@ const statusColors: Record<TaskStatus, string> = {
 };
 
 const statusOrder: TaskStatus[] = [
-  taskStatus.IN_PROGRESS,
-  taskStatus.UNDER_REVIEW,
   taskStatus.PENDING,
   taskStatus.ON_HOLD,
+  taskStatus.IN_PROGRESS,
+  taskStatus.UNDER_REVIEW,
   taskStatus.COMPLETED,
 ];
 
@@ -66,16 +66,15 @@ export default function TasksList({ tasks }: TasksListProps) {
   }
 
   return (
-    <div className="mt-6 overflow-x-auto pb-4 -mx-4 px-4">
-      <div className="flex gap-4 min-w-max">
+    <div className="mt-6 overflow-x-auto pb-4">
+      <div className="grid grid-cols-5 gap-4 min-w-[640px]">
         {statusOrder.map((status) => {
           const tasksForStatus = groupedTasks[status];
-          if (tasksForStatus.length === 0) return null;
 
           return (
             <div
               key={status}
-              className="w-72 flex-shrink-0"
+              className="min-w-0"
             >
               <div className="flex items-center gap-2 mb-3">
                 <div
@@ -102,3 +101,4 @@ export default function TasksList({ tasks }: TasksListProps) {
     </div>
   );
 }
+
