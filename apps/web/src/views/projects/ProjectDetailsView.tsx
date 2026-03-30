@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { getProjectById } from "../../api/ProjectAPI";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Folder, Pencil, ListTodo, Plus } from "lucide-react";
-import { AddTaskModal, TasksList } from "../../components";
+import { AddTaskModal, TasksList, EditTaskQuery } from "../../components";
 
 function HeaderSkeleton() {
   return (
@@ -31,6 +31,7 @@ export default function ProjectDetailsView() {
   const location = useLocation();
 
   const showModal = new URLSearchParams(location.search).get("newTask") === "true";
+  const editTaskId = new URLSearchParams(location.search).get("editTask");
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["project", projectId],
@@ -124,6 +125,7 @@ export default function ProjectDetailsView() {
       {data?.tasks && <TasksList tasks={data.tasks} />}
 
       {showModal && <AddTaskModal projectId={projectId!} onClose={closeModal} />}
+      {editTaskId && <EditTaskQuery projectId={projectId!} taskId={editTaskId} />}
     </div>
   );
 }

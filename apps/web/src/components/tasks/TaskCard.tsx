@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import type { Task, TaskStatus } from "../../types";
 
@@ -18,6 +19,7 @@ const statusColors: Record<TaskStatus, string> = {
 export default function TaskCard({ task, statusColor }: TaskCardProps) {
   const [showPopup, setShowPopup] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -62,6 +64,7 @@ export default function TaskCard({ task, statusColor }: TaskCardProps) {
             onClick={(e) => {
               e.stopPropagation();
               setShowPopup(false);
+              navigate(`?editTask=${task._id}`);
             }}
             className="w-full flex items-center gap-2 px-3 py-2 text-sm text-dark hover:bg-border/40 transition-colors"
           >
