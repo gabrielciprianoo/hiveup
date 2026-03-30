@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { getProjectById } from "../../api/ProjectAPI";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Folder, Pencil, ListTodo, Plus } from "lucide-react";
-import { AddTaskModal, TasksList, EditTaskQuery, DeleteTaskModal } from "../../components";
+import { AddTaskModal, TasksList, EditTaskQuery, DeleteTaskModal, ViewTaskQuery } from "../../components";
 
 function HeaderSkeleton() {
   return (
@@ -33,6 +33,7 @@ export default function ProjectDetailsView() {
   const showModal = new URLSearchParams(location.search).get("newTask") === "true";
   const editTaskId = new URLSearchParams(location.search).get("editTask");
   const deleteTaskId = new URLSearchParams(location.search).get("deleteTask");
+  const viewTaskId = new URLSearchParams(location.search).get("viewTask");
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["project", projectId],
@@ -128,6 +129,7 @@ export default function ProjectDetailsView() {
       {showModal && <AddTaskModal projectId={projectId!} onClose={closeModal} />}
       {editTaskId && <EditTaskQuery projectId={projectId!} taskId={editTaskId} />}
       {deleteTaskId && <DeleteTaskModal projectId={projectId!} taskId={deleteTaskId} />}
+      {viewTaskId && <ViewTaskQuery projectId={projectId!} taskId={viewTaskId} />}
     </div>
   );
 }

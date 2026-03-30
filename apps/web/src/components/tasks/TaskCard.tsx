@@ -49,6 +49,7 @@ export default function TaskCard({ task, statusColor }: TaskCardProps) {
     <div
       className={`relative p-3 rounded-lg border-l-4 bg-white hover:shadow-md transition-all duration-150 cursor-pointer ${statusColors[task.status as TaskStatus] || statusColors.pending}`}
       style={{ borderLeftColor: statusColor }}
+      onClick={() => navigate(`?viewTask=${task._id}`)}
     >
       <div className="flex items-start justify-between gap-2">
         <p className="text-sm font-medium text-dark flex-1">{task.name}</p>
