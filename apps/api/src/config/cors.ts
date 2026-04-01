@@ -2,8 +2,12 @@ import { CorsOptions } from "cors";
 
 export const corsConfig: CorsOptions = {
   origin: function (origin, callback) {
-    const whiteList = [process.env.FRONTEND_URL];
+    
+    if (process.env.NODE_ENV === "development" && !origin) {
+      return callback(null, true);
+    }
 
+    const whiteList = [process.env.FRONTEND_URL];
     if (whiteList.includes(origin)) {
       callback(null, true);
     } else {
