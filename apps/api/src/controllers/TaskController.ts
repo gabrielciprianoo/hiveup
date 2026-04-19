@@ -45,7 +45,7 @@ export class TaskController {
   static deleteTaskById = async (request: Request, response: Response) => {
    
 
-    request.project.tasks = request.project.tasks.filter(task => task.toString() !== request.task.id)
+    request.project.tasks = request.project.tasks.filter(task => task!.toString() !== request.task.id)
   
     await Promise.allSettled([request.task.deleteOne(), request.project.save()])
 
