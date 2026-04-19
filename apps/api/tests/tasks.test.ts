@@ -176,7 +176,7 @@ describe('Tasks API', () => {
     it('should return 404 for non-existent task', async () => {
       const res = await request(app).get(`/api/projects/${project._id}/tasks/${invalidId}`);
       expect(res.status).toBe(404);
-      expect(res.body.error).toBe('Tarea no encontrado');
+      expect(res.body.error).toBe('Tarea no encontrada');
     });
 
     it('should return 500 for invalid task ID format', async () => {
@@ -224,7 +224,7 @@ describe('Tasks API', () => {
         .put(`/api/projects/${project._id}/tasks/${invalidId}`)
         .send({ name: 'Updated Task' });
       expect(res.status).toBe(404);
-      expect(res.body.error).toBe('Tarea no encontrado');
+      expect(res.body.error).toBe('Tarea no encontrada');
     });
 
     it('should return 500 for invalid task ID format', async () => {
@@ -308,7 +308,7 @@ describe('Tasks API', () => {
     it('should return 404 for non-existent task', async () => {
       const res = await request(app).delete(`/api/projects/${project._id}/tasks/${invalidId}`);
       expect(res.status).toBe(404);
-      expect(res.body.error).toBe('Tarea no encontrado');
+      expect(res.body.error).toBe('Tarea no encontrada');
     });
 
     it('should return 500 for invalid task ID format', async () => {
@@ -392,7 +392,7 @@ describe('Tasks API', () => {
         .post(`/api/projects/${project._id}/tasks/${invalidId}/status`)
         .send({ status: taskStatus.IN_PROGRESS });
       expect(res.status).toBe(404);
-      expect(res.body.error).toBe('Tarea no encontrado');
+      expect(res.body.error).toBe('Tarea no encontrada');
     });
 
     it('should return 500 for invalid task ID format', async () => {
