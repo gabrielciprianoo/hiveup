@@ -21,3 +21,10 @@ export const registerRules = [
     .isLength({ min: 8, max: 100 })
     .withMessage("La contraseña debe tener al menos 8 caracteres"),
 ];
+
+export const tokenRules = [
+  body("token")
+  .notEmpty()
+  .isLength({min: 6})
+  .withMessage("Token No Válido")
+]

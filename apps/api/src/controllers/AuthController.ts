@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import User from "../models/User";
 import { hashPassword } from "../utils/auth";
+import Token from "../models/Token";
+import { generate6DigitToken } from "../utils/token";
+import { sendConfirmationEmail } from "../services/email";
 
 export class AuthController {
   static createAccount = async (request: Request, response: Response) => {
@@ -15,14 +18,57 @@ export class AuthController {
         return;
       }
 
+      //create user
+
       const user = new User(request.body);
       user.password = await hashPassword(password);
 
-      await user.save();
+      //generate token
+      const token = new Token();
+      token.token = generate6DigitToken();
+      token.user = user.id;
 
-      response
-        .status(201)
-        .json({ message: "Cuenta registrada exitosamente revise su email para confirmar su cuenta" });
+      await Promise.allSettled([user.save(), token.save()]);
+
+      await sendConfirmationEmail({
+        to: user.email,
+        name: user.name,
+        token: token.token,
+      });
+
+      response.status(201).json({
+        message:
+          "Cuenta registrada exitosamente revise su email para confirmar su cuenta",
+      });
+    } catch (error) {
+      response.status(500).json({ error: "Error del servidor" });
+    }
+  };
+
+  static confirmAccount = async (request: Request, response: Response) => {
+    try {
+      const { token } = request.body;
+      const tokenExist = await Token.findOne({ token });
+
+      if (!tokenExist) {
+        const error = new Error("Token no válido");
+        response.status(401).json({ error: error.message });
+        return;
+      }
+
+      const user = await User.findById(tokenExist.user);
+      if (!user) {
+        const error = new Error("Usuario no encontrado");
+        response.status(401).json({ error: error.message });
+        return;
+      }
+      
+      user.confirmed = true;
+      Promise.allSettled([tokenExist.deleteOne(), user.save()]);
+
+      response.status(201).json({
+        message: "Cuenta confirmada exitosamente",
+      });
     } catch (error) {
       response.status(500).json({ error: "Error del servidor" });
     }
