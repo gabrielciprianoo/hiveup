@@ -1,5 +1,6 @@
 //files
 export { default as DashboardView } from './DashboardView';
 
-//folders 
+//folders
 export * from "./projects";
+export * from "./auth";

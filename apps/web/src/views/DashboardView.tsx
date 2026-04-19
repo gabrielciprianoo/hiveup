@@ -1,7 +1,6 @@
 import { memo } from "react";
 import { Link } from "react-router-dom";
-import { Plus, Layers, Users, TrendingUp, type LucideIcon } from "lucide-react";
-import { useUser } from "../contexts";
+import { Layers, Users, TrendingUp, type LucideIcon } from "lucide-react";
 
 interface Feature {
   icon: LucideIcon;
@@ -45,15 +44,11 @@ const FeatureCard = memo(function FeatureCard({
 });
 
 function WelcomeBanner() {
-  const { user } = useUser();
-
   return (
     <div className="text-center mb-20">
       <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-lg mb-6">
         <span className="w-2 h-2 bg-primary rounded-full" />
-        <span className="text-sm font-medium text-primary">
-          Bienvenido, {user?.name ?? "Usuario"}
-        </span>
+        <span className="text-sm font-medium text-primary">Gestión de proyectos</span>
       </div>
 
       <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-6xl font-bold text-dark tracking-tight leading-none">
@@ -67,17 +62,16 @@ function WelcomeBanner() {
 
       <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
         <Link
-          to="/projects/create"
+          to="/register"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg font-medium hover:bg-active transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2"
         >
-          <Plus className="w-5 h-5" />
-          Nuevo proyecto
+          Crear cuenta gratis
         </Link>
         <Link
-          to="/projects"
+          to="/login"
           className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-surface text-dark rounded-lg font-medium border border-border hover:border-primary/50 hover:bg-primary/5 transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
         >
-          Ver proyectos
+          Iniciar sesión
         </Link>
       </div>
     </div>

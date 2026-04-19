@@ -1,11 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AppLayout } from "./layouts";
-import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView } from "./views";
+import { AppLayout, AuthLayout } from "./layouts";
+import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView, LoginView, RegisterView } from "./views";
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<LoginView />} />
+          <Route path="/register" element={<RegisterView />} />
+        </Route>
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardView />} />
           <Route path="/projects" element={<ProjectsView />} />
