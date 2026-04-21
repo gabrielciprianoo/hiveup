@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { Layers, Users, TrendingUp } from "lucide-react";
 
 const FEATURES = [
@@ -16,9 +16,9 @@ function HeroPanel() {
       </div>
 
       <div className="relative z-10">
-        <span className="text-2xl font-bold tracking-tight text-white">
+        <Link to="/" className="text-2xl font-bold tracking-tight text-white">
           Hive<span className="text-primary">Up</span>
-        </span>
+        </Link>
       </div>
 
       <div className="relative z-10 space-y-8">
@@ -44,7 +44,7 @@ function HeroPanel() {
         </ul>
       </div>
 
-      <p className="relative z-10 text-white/30 text-sm">© 2025 HiveUp</p>
+      <p className="relative z-10 text-white/30 text-sm">© {new Date().getFullYear()} HiveUp</p>
     </div>
   );
 }
@@ -56,9 +56,9 @@ export default function AuthLayout() {
       <div className="flex items-center justify-center p-6 sm:p-10 bg-background">
         <div className="w-full max-w-md">
           <div className="mb-8 lg:hidden">
-            <span className="text-2xl font-bold tracking-tight text-dark">
+            <Link to="/" className="text-2xl font-bold tracking-tight text-dark">
               Hive<span className="text-primary">Up</span>
-            </span>
+            </Link>
           </div>
           <Outlet />
         </div>
