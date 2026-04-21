@@ -55,6 +55,8 @@ function baseLayout(content: string): string {
 </html>`;
 }
 
+const FRONTEND_URL = process.env.FRONTEND_URL ?? "http://localhost:5173";
+
 function tokenBox(token: string): string {
   return `
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
@@ -63,6 +65,19 @@ function tokenBox(token: string): string {
           <span style="font-size:38px;font-weight:800;letter-spacing:10px;color:#f59e0b;">
             ${token}
           </span>
+        </td>
+      </tr>
+    </table>`;
+}
+
+function ctaButton(href: string, label: string): string {
+  return `
+    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
+      <tr>
+        <td align="center">
+          <a href="${href}" style="display:inline-block;padding:12px 28px;background-color:#f59e0b;color:#0f172a;font-size:14px;font-weight:700;text-decoration:none;border-radius:8px;">
+            ${label}
+          </a>
         </td>
       </tr>
     </table>`;
@@ -81,6 +96,7 @@ export async function sendConfirmationEmail(params: EmailParams) {
         Expira en <strong style="color:#f1f5f9;">10 minutos</strong>.
       </p>
       ${tokenBox(params.token)}
+      ${ctaButton(`${FRONTEND_URL}/confirm-account?ref=${Buffer.from(params.to).toString("base64")}`, "Confirmar cuenta")}
       <p style="margin:0;font-size:13px;color:#64748b;line-height:1.6;">
         Si no creaste esta cuenta, puedes ignorar este correo de forma segura.
       </p>

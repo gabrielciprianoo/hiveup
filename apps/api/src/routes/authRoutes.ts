@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { AuthController } from "../controllers/AuthController";
-import { loginRules, registerRules, tokenRules } from "../validators/auth.validators";
+import { emailRules, loginRules, registerRules, tokenRules } from "../validators/auth.validators";
 import { handleInputErrors } from "../middleware/validation";
 
 const router: Router = Router();
@@ -17,6 +17,13 @@ router.post(
   tokenRules,
   handleInputErrors,
   AuthController.confirmAccount,
+);
+
+router.post(
+  "/request-confirmation-code",
+  emailRules,
+  handleInputErrors,
+  AuthController.requestConfirmationCode,
 );
 
 router.post(

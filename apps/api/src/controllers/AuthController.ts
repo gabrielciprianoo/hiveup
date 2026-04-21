@@ -74,6 +74,45 @@ export class AuthController {
     }
   };
 
+  static requestConfirmationCode = async (
+    request: Request,
+    response: Response,
+  ) => {
+    try {
+      const { email } = request.body;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        response.status(404).json({ error: "Usuario no encontrado" });
+        return;
+      }
+
+      if (user.confirmed) {
+        response.status(409).json({ error: "El usuario ya está confirmado" });
+        return;
+      }
+
+      await Token.deleteMany({ user: user.id });
+
+      const token = new Token();
+      token.token = generate6DigitToken();
+      token.user = user.id;
+      await token.save();
+
+      await sendConfirmationEmail({
+        to: user.email,
+        name: user.name,
+        token: token.token,
+      });
+
+      response
+        .status(200)
+        .json({ message: "Se envió un nuevo código a tu email" });
+    } catch (error) {
+      response.status(500).json({ error: "Error del servidor" });
+    }
+  };
+
   static login = async (request: Request, response: Response) => {
     try {
       const { email, password } = request.body;

@@ -23,11 +23,23 @@ export const registerRules = [
     .notEmpty()
     .withMessage("La contraseña es obligatoria")
     .isLength({ min: 8, max: 100 })
-    .withMessage("La contraseña debe tener al menos 8 caracteres"),
+    .withMessage("La contraseña debe tener al menos 8 caracteres")
+    .matches(/^\S+$/)
+    .withMessage("La contraseña no puede contener espacios"),
 ];
 
 export const tokenRules = [
   body("token").notEmpty().isLength({ min: 6 }).withMessage("Token No Válido"),
+];
+
+export const emailRules = [
+  body("email")
+    .trim()
+    .notEmpty()
+    .withMessage("El email es obligatorio")
+    .isEmail()
+    .withMessage("El email no es válido")
+    .normalizeEmail(),
 ];
 
 export const loginRules = [
@@ -38,5 +50,9 @@ export const loginRules = [
     .isEmail()
     .withMessage("El email no es válido")
     .normalizeEmail(),
-  body("password").notEmpty().withMessage("La contraseña es obligatoria"),
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria")
+    .matches(/^\S+$/)
+    .withMessage("La contraseña no puede contener espacios"),
 ];
