@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout, AuthLayout } from "./layouts";
-import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView, LoginView, RegisterView } from "./views";
+import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView, LoginView, RegisterView, ConfirmAccountView, RequestCodeView } from "./views";
 
 export default function Router() {
   return (
@@ -9,6 +9,8 @@ export default function Router() {
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginView />} />
           <Route path="/register" element={<RegisterView />} />
+          <Route path="/confirm-account" element={<ConfirmAccountView />} />
+          <Route path="/request-code" element={<RequestCodeView />} />
         </Route>
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardView />} />
