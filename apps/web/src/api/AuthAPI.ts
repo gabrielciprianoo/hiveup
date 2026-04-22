@@ -2,9 +2,11 @@ import { isAxiosError } from "axios";
 import api from "../lib/axios";
 import type {
   ConfirmAccountFormData,
+  ForgotPasswordFormData,
   LoginFormData,
   RegisterUserFormData,
   RequestCodeFormData,
+  ResetPasswordFormData,
 } from "../types/auth";
 
 function handleAxiosError(error: unknown): never {
@@ -53,6 +55,42 @@ export async function AutenticateUser(formData: LoginFormData) {
   try {
     const { data } = await api.post<{ message: string }>(
       "/auth/login",
+      formData,
+    );
+    return data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+export async function ForgotPassword(formData: ForgotPasswordFormData) {
+  try {
+    const { data } = await api.post<{ message: string }>(
+      "/auth/forgot-password",
+      formData,
+    );
+    return data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+export async function ValidateToken(formData: ConfirmAccountFormData) {
+  try {
+    const { data } = await api.post<{ message: string }>(
+      "/auth/validate-token",
+      formData,
+    );
+    return data;
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+export async function ResetPassword(formData: ResetPasswordFormData) {
+  try {
+    const { data } = await api.post<{ message: string }>(
+      "/auth/reset-password",
       formData,
     );
     return data;

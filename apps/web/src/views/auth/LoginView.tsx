@@ -112,6 +112,15 @@ export default function LoginView() {
           )}
         </div>
 
+        <div className="flex justify-end">
+          <Link
+            to="/forgot-password"
+            className="text-sm text-primary font-medium hover:underline"
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
+
         <button
           type="submit"
           disabled={isPending}

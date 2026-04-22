@@ -3,7 +3,7 @@ import User from "../models/User";
 import { hashPassword, verifyPassword } from "../utils/auth";
 import Token from "../models/Token";
 import { generate6DigitToken } from "../utils/token";
-import { sendConfirmationEmail } from "../services/email";
+import { sendConfirmationEmail, sendPasswordResetEmail } from "../services/email";
 
 export class AuthController {
   static createAccount = async (request: Request, response: Response) => {
@@ -153,6 +153,81 @@ export class AuthController {
       }
 
       response.send("autenticado");
+    } catch (error) {
+      response.status(500).json({ error: "Error del servidor" });
+    }
+  };
+
+  static forgotPassword = async (request: Request, response: Response) => {
+    try {
+      const { email } = request.body;
+      const user = await User.findOne({ email });
+
+      if (!user) {
+        response.status(404).json({ error: "Usuario no encontrado" });
+        return;
+      }
+
+      if (!user.confirmed) {
+        response.status(403).json({ error: "Tu cuenta no está confirmada" });
+        return;
+      }
+
+      await Token.deleteMany({ user: user.id });
+
+      const token = new Token();
+      token.token = generate6DigitToken();
+      token.user = user.id;
+      await token.save();
+
+      await sendPasswordResetEmail({
+        to: user.email,
+        name: user.name,
+        token: token.token,
+      });
+
+      response.status(200).json({ message: "Revisa tu email para restablecer tu contraseña" });
+    } catch (error) {
+      response.status(500).json({ error: "Error del servidor" });
+    }
+  };
+
+  static validateToken = async (request: Request, response: Response) => {
+    try {
+      const { token } = request.body;
+      const tokenExists = await Token.findOne({ token });
+
+      if (!tokenExists) {
+        response.status(404).json({ error: "Token no válido" });
+        return;
+      }
+
+      response.status(200).json({ message: "Token válido, define tu nueva contraseña" });
+    } catch (error) {
+      response.status(500).json({ error: "Error del servidor" });
+    }
+  };
+
+  static resetPassword = async (request: Request, response: Response) => {
+    try {
+      const { token, password } = request.body;
+      const tokenExists = await Token.findOne({ token });
+
+      if (!tokenExists) {
+        response.status(404).json({ error: "Token no válido" });
+        return;
+      }
+
+      const user = await User.findById(tokenExists.user);
+      if (!user) {
+        response.status(404).json({ error: "Usuario no encontrado" });
+        return;
+      }
+
+      user.password = await hashPassword(password);
+      await Promise.allSettled([tokenExists.deleteOne(), user.save()]);
+
+      response.status(200).json({ message: "Contraseña restablecida correctamente" });
     } catch (error) {
       response.status(500).json({ error: "Error del servidor" });
     }

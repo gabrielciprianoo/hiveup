@@ -56,3 +56,18 @@ export const loginRules = [
     .matches(/^\S+$/)
     .withMessage("La contraseña no puede contener espacios"),
 ];
+
+export const newPasswordRules = [
+  body("token").notEmpty().isLength({ min: 6 }).withMessage("Token no válido"),
+  body("password")
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria")
+    .isLength({ min: 8, max: 100 })
+    .withMessage("La contraseña debe tener al menos 8 caracteres")
+    .matches(/^\S+$/)
+    .withMessage("La contraseña no puede contener espacios"),
+];
+
+export const validateTokenRules = [
+  body("token").notEmpty().isLength({ min: 6 }).withMessage("Token no válido"),
+];

@@ -11,6 +11,8 @@ export const loginSchema = pick(authSchema, ["email", "password"]);
 export const registerSchema = pick(authSchema, ["name", "email", "password"]);
 export const confirmAccountSchema = pick(authSchema, ["token"]);
 export const requestCodeSchema = pick(authSchema, ["email"]);
+export const forgotPasswordSchema = pick(authSchema, ["email"]);
+export const resetPasswordSchema = pick(authSchema, ["token", "password"]);
 
 export type LoginFormData = InferOutput<typeof loginSchema>;
 export type RegisterUserFormData = InferOutput<typeof registerSchema> & {
@@ -18,3 +20,7 @@ export type RegisterUserFormData = InferOutput<typeof registerSchema> & {
 };
 export type ConfirmAccountFormData = InferOutput<typeof confirmAccountSchema>;
 export type RequestCodeFormData = InferOutput<typeof requestCodeSchema>;
+export type ForgotPasswordFormData = InferOutput<typeof forgotPasswordSchema>;
+export type ResetPasswordFormData = InferOutput<typeof resetPasswordSchema> & {
+  confirm_password: string;
+};

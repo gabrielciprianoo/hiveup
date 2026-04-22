@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AppLayout, AuthLayout } from "./layouts";
-import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView, LoginView, RegisterView, ConfirmAccountView, RequestCodeView } from "./views";
+import { CreateProjectView, DashboardView, EditProjectView, ProjectDetailsView, ProjectsView, LoginView, RegisterView, ConfirmAccountView, RequestCodeView, ForgotPasswordView, NewPasswordView } from "./views";
 
 export default function Router() {
   return (
@@ -11,6 +11,8 @@ export default function Router() {
           <Route path="/register" element={<RegisterView />} />
           <Route path="/confirm-account" element={<ConfirmAccountView />} />
           <Route path="/request-code" element={<RequestCodeView />} />
+          <Route path="/forgot-password" element={<ForgotPasswordView />} />
+          <Route path="/new-password" element={<NewPasswordView />} />
         </Route>
         <Route element={<AppLayout />}>
           <Route path="/" element={<DashboardView />} />
