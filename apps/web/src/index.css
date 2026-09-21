@@ -1,1 +1,30 @@
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #F97316;
+  --color-active: #EA580C;
+  --color-dark: #111827;
+  --color-secondary: #6B7280;
+  --color-background: #FAFAF9;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E7EB;
+  
+  --font-sans: "Inter", sans-serif;
+}
+
+:root {
+  --sileo-state-success: #10B981;
+  --sileo-state-error: #EF4444;
+  --sileo-state-warning: #F59E0B;
+  --sileo-state-info: #3B82F6;
+  --sileo-width: 360px;
+  --sileo-gap: 12px;
+}
+
+
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-dark);
+}
