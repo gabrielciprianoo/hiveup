@@ -4,6 +4,7 @@ import { hashPassword, verifyPassword } from "../utils/auth";
 import Token from "../models/Token";
 import { generate6DigitToken } from "../utils/token";
 import { sendConfirmationEmail, sendPasswordResetEmail } from "../services/email";
+import { generateJWT } from "../utils/jwt";
 
 export class AuthController {
   static createAccount = async (request: Request, response: Response) => {
@@ -152,7 +153,9 @@ export class AuthController {
         return;
       }
 
-      response.send("autenticado");
+      const token = generateJWT({ id: user.id });
+
+      response.send(token);
     } catch (error) {
       response.status(500).json({ error: "Error del servidor" });
     }

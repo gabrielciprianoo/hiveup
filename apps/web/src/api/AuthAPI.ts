@@ -53,11 +53,11 @@ export async function RequestConfirmationCode(formData: RequestCodeFormData) {
 }
 export async function AutenticateUser(formData: LoginFormData) {
   try {
-    const { data } = await api.post<{ message: string }>(
+    const { data } = await api.post(
       "/auth/login",
       formData,
     );
-    return data;
+    localStorage.setItem('hiveup_auth_token', data);
   } catch (error) {
     handleAxiosError(error);
   }
